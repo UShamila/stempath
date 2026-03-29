@@ -85,9 +85,9 @@ export const mentorshipAPI = {
 export const courseAPI = {
   list:          (params = {}) => get(`/courses?${new URLSearchParams(params)}`),
   categories:    ()            => get('/courses/categories'),
-  all:           ()            => get('/courses/all'),
+  all:           ()            => get('/courses'),
   get:           (idOrSlug)    => get(`/courses/${idOrSlug}`),
-  myCourses:     ()            => get('/courses/my-courses'),
+  myCourses:     ()            => get('/courses/enrolled'),
   enroll:        (courseId)    => post(`/courses/${courseId}/enroll`),
   create:        (form)        => postForm('/courses', form),
   update:        (id, body)    => patch(`/courses/${id}`, body),
