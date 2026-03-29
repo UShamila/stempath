@@ -19,8 +19,6 @@ async function request(method, path, body = null, opts = {}) {
   // For FormData, let browser set Content-Type (multipart boundary)
   if (body instanceof FormData) delete headers['Content-Type']
   
-  
-  console.log("Fetching from:", `${BASE_URL}${path}`);
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
@@ -85,9 +83,9 @@ export const mentorshipAPI = {
 export const courseAPI = {
   list:          (params = {}) => get(`/courses?${new URLSearchParams(params)}`),
   categories:    ()            => get('/courses/categories'),
-  all:           ()            => get('/courses'),
+  all:           ()            => get('/courses/all'),
   get:           (idOrSlug)    => get(`/courses/${idOrSlug}`),
-  myCourses:     ()            => get('/courses/enrolled'),
+  myCourses:     ()            => get('/courses/my-courses'),
   enroll:        (courseId)    => post(`/courses/${courseId}/enroll`),
   create:        (form)        => postForm('/courses', form),
   update:        (id, body)    => patch(`/courses/${id}`, body),
