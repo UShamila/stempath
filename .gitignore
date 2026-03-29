@@ -3,3 +3,9 @@
 
 # env files (can opt-in for committing if needed)
 .env
+
+# Build outputs
+/build
+# Static files
+uploads/
+dist/
