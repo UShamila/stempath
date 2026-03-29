@@ -18,7 +18,9 @@ async function request(method, path, body = null, opts = {}) {
 
   // For FormData, let browser set Content-Type (multipart boundary)
   if (body instanceof FormData) delete headers['Content-Type']
-
+  
+  
+  console.log("Fetching from:", `${BASE_URL}${path}`);
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
