@@ -6,6 +6,11 @@ A full-stack STEM mentorship and learning platform with a React frontend and Nod
 
 ---
 
+## 🌐 Live Demo
+
+Experience STEMPath in action:  
+🔗 https://stempath-1.onrender.com
+
 ## 🚀 Quick Start
 
 ### Option A — Docker (recommended, one command)
