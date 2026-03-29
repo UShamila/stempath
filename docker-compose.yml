@@ -1,0 +1,71 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: stempath_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       stempath
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: shamila99004
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seedData.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: stempath_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT:            5000
+      NODE_ENV:        development
+      DB_HOST:         postgres
+      DB_PORT:         5432
+      DB_NAME:         stempath
+      DB_USER:         postgres
+      DB_PASSWORD:     shamila99004
+      JWT_SECRET:      stempath_jwt_secret_dev
+      JWT_EXPIRES_IN:  7d
+      FRONTEND_URL:    http://localhost:5173
+      MAX_FILE_SIZE_MB: 10
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - uploads_data:/app/uploads
+
+  # Frontend Development Server 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: stempath_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+  uploads_data:
